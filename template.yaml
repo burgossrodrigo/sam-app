@@ -8,13 +8,12 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
 Resources:
   LigarPorteiro:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
       Handler: src/handlers/porteiro.startEC2Instances
       Runtime: nodejs22.x
       Architectures:
@@ -29,4 +28,22 @@ Resources:
             - Effect: Allow
               Action:
                 - ec2:StartInstances
+              Resource: "*"
+  DesligarPorteiro:
+    Type: AWS::Serverless::Function # More info about Function Resource:
+    Properties:
+      Handler: src/handlers/porteiro.stopEC2Instances
+      Runtime: nodejs22.x
+      Architectures:
+        - x86_64
+      Events:
+        CloudWatchEvent:
+          Type: Schedule 
+          Properties:
+            Schedule: cron(10, 21 ? * MON-FRI *)
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ec2:StopInstances
               Resource: "*"

@@ -16,6 +16,11 @@ lint = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
+stack_name = "porteiro"
+s3_prefix = "porteiro"
+region = "us-east-1"
+profile = "bia"
+image_repositories = []
 
 [default.package.parameters]
 resolve_s3 = true
